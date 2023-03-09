@@ -49,6 +49,7 @@ parts:
       make install
       mkdir -p $SNAPCRAFT_PART_INSTALL/x86-64
       cp -r $SNAPCRAFT_PART_BUILD/output $SNAPCRAFT_PART_INSTALL/x86-64
+      rm -rf $SNAPCRAFT_PART_INSTALL/x86-64/output/x86_64-linux-musl/lib/ld-musl-x86_64.so.1
     stage:
       - -*.*
 
@@ -76,6 +77,7 @@ parts:
       make install
       mkdir -p $SNAPCRAFT_PART_INSTALL/aarch64
       cp -r $SNAPCRAFT_PART_BUILD/output $SNAPCRAFT_PART_INSTALL/aarch64
+      rm -rf $SNAPCRAFT_PART_INSTALL/aarch64/output/aarch64-linux-musl/lib/ld-musl-aarch64.so.1
     stage:
       - -*.*
 
@@ -103,6 +105,7 @@ parts:
       make install
       mkdir -p $SNAPCRAFT_PART_INSTALL/powerpc64le
       cp -r $SNAPCRAFT_PART_BUILD/output $SNAPCRAFT_PART_INSTALL/powerpc64le
+      rm -rf $SNAPCRAFT_PART_INSTALL/powerpc64le/output/powerpc64le-linux-musl/lib/ld-musl-powerpc64le.so.1
     stage:
       - -*.*
 
@@ -130,5 +133,6 @@ parts:
       make install
       mkdir -p $SNAPCRAFT_PART_INSTALL/s390x
       cp -r $SNAPCRAFT_PART_BUILD/output $SNAPCRAFT_PART_INSTALL/s390x
+      rm -rf $SNAPCRAFT_PART_INSTALL/s390x/output/s390x-linux-musl/lib/ld-musl-s390x.so.1
     stage:
       - -*.*

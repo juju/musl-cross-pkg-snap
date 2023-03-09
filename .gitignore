@@ -54,3 +54,4 @@ dkms.conf
 # Snap
 *.snap
 *.txt
+*.properties
