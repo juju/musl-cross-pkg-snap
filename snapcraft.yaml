@@ -1,4 +1,4 @@
-name: musl-cross
+name: juju-musl-cross
 base: core20
 version: "1.0.0"
 confinement: classic
