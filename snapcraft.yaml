@@ -1,0 +1,138 @@
+name: juju-musl-cross
+base: core20
+version: "1.0.0"
+confinement: classic
+summary: musl-cross-make - as a snap
+description: |-
+  musl-cross-make compiled to a snap
+
+issues: https://github.com/juju/musl-cross-pkg-snap/issues
+source-code: https://github.com/juju/musl-cross-pkg-snap
+website: https://github.com/richfelker/musl-cross-make
+
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+
+apps:
+  x86-64-musl-gcc:
+    command: x86-64/output/bin/x86_64-linux-musl-gcc
+  aarch64-musl-gcc:
+    command: aarch64/output/bin/aarch64-linux-musl-gcc
+  ppcc64le-musl-gcc:
+    command: powerpc64le/output/bin/powerpc64le-linux-musl-gcc
+  s390x-musl-gcc:
+    command: s390x/output/bin/s390x-linux-musl-gcc
+
+parts:
+  x86-64-musl-cc:
+    source: https://github.com/richfelker/musl-cross-make.git
+    source-type: git
+    plugin: make
+    build-packages:
+      - gcc
+      - make
+      - build-essential
+      - wget
+      - curl
+    override-build: |
+      set -ex
+      cat << EOF > config.mak
+      TARGET = x86_64-linux-musl
+      OUTPUT = $SNAPCRAFT_PART_BUILD/output
+      COMMON_CONFIG += CFLAGS="-g0 -Os -static --static"
+      COMMON_CONFIG += CXXFLAGS="-g0 -Os -static --static"
+      COMMON_CONFIG += LDFLAGS="-s"
+      COMMON_CONFIG += --disable-nls
+      EOF
+      make -j$(nproc)
+      make install
+      mkdir -p $SNAPCRAFT_PART_INSTALL/x86-64
+      cp -r $SNAPCRAFT_PART_BUILD/output $SNAPCRAFT_PART_INSTALL/x86-64
+      rm -rf $SNAPCRAFT_PART_INSTALL/x86-64/output/x86_64-linux-musl/lib/ld-musl-x86_64.so.1
+    stage:
+      - -*.*
+
+  aarch64-musl-cc:
+    source: https://github.com/richfelker/musl-cross-make.git
+    source-type: git
+    plugin: make
+    build-packages:
+      - gcc
+      - make
+      - build-essential
+      - wget
+      - curl
+    override-build: |
+      set -ex
+      cat << EOF > config.mak
+      TARGET = aarch64-linux-musl
+      OUTPUT = $SNAPCRAFT_PART_BUILD/output
+      COMMON_CONFIG += CFLAGS="-g0 -Os -static --static"
+      COMMON_CONFIG += CXXFLAGS="-g0 -Os -static --static"
+      COMMON_CONFIG += LDFLAGS="-s"
+      COMMON_CONFIG += --disable-nls
+      EOF
+      make -j$(nproc)
+      make install
+      mkdir -p $SNAPCRAFT_PART_INSTALL/aarch64
+      cp -r $SNAPCRAFT_PART_BUILD/output $SNAPCRAFT_PART_INSTALL/aarch64
+      rm -rf $SNAPCRAFT_PART_INSTALL/aarch64/output/aarch64-linux-musl/lib/ld-musl-aarch64.so.1
+    stage:
+      - -*.*
+
+  ppcc64le-musl-gcc:
+    source: https://github.com/richfelker/musl-cross-make.git
+    source-type: git
+    plugin: make
+    build-packages:
+      - gcc
+      - make
+      - build-essential
+      - wget
+      - curl
+    override-build: |
+      set -ex
+      cat << EOF > config.mak
+      TARGET = powerpc64le-linux-musl
+      OUTPUT = $SNAPCRAFT_PART_BUILD/output
+      COMMON_CONFIG += CFLAGS="-g0 -Os -static --static"
+      COMMON_CONFIG += CXXFLAGS="-g0 -Os -static --static"
+      COMMON_CONFIG += LDFLAGS="-s"
+      COMMON_CONFIG += --disable-nls
+      EOF
+      make -j$(nproc)
+      make install
+      mkdir -p $SNAPCRAFT_PART_INSTALL/powerpc64le
+      cp -r $SNAPCRAFT_PART_BUILD/output $SNAPCRAFT_PART_INSTALL/powerpc64le
+      rm -rf $SNAPCRAFT_PART_INSTALL/powerpc64le/output/powerpc64le-linux-musl/lib/ld-musl-powerpc64le.so.1
+    stage:
+      - -*.*
+
+  s390x-musl-gcc:
+    source: https://github.com/richfelker/musl-cross-make.git
+    source-type: git
+    plugin: make
+    build-packages:
+      - gcc
+      - make
+      - build-essential
+      - wget
+      - curl
+    override-build: |
+      set -ex
+      cat << EOF > config.mak
+      TARGET = s390x-linux-musl
+      OUTPUT = $SNAPCRAFT_PART_BUILD/output
+      COMMON_CONFIG += CFLAGS="-g0 -Os -static --static"
+      COMMON_CONFIG += CXXFLAGS="-g0 -Os -static --static"
+      COMMON_CONFIG += LDFLAGS="-s"
+      COMMON_CONFIG += --disable-nls
+      EOF
+      make -j$(nproc)
+      make install
+      mkdir -p $SNAPCRAFT_PART_INSTALL/s390x
+      cp -r $SNAPCRAFT_PART_BUILD/output $SNAPCRAFT_PART_INSTALL/s390x
+      rm -rf $SNAPCRAFT_PART_INSTALL/s390x/output/s390x-linux-musl/lib/ld-musl-s390x.so.1
+    stage:
+      - -*.*
